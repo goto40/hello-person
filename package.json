@@ -1,0 +1,4 @@
+{
+  "name": "hello-person",
+  "workspaces": ["hello", "person"]
+}

@@ -1,0 +1,12 @@
+{
+    "projectName": "Person",
+    "languages": [{
+        "id": "person",
+        "grammar": "src/language/person.langium",
+        "fileExtensions": [".person"],
+        "textMate": {
+            "out": "syntaxes/person.tmLanguage.json"
+        }
+    }],
+    "out": "src/language/generated"
+}
