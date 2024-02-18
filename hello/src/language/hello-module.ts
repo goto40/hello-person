@@ -1,9 +1,10 @@
 import { type Module, inject, LangiumGeneratedSharedCoreServices } from 'langium';
 import { createDefaultModule, createDefaultSharedModule, type DefaultSharedModuleContext, type LangiumServices, type LangiumSharedServices, type PartialLangiumServices } from 'langium/lsp';
-import { HelloGeneratedModule, HelloGeneratedSharedModule } from './generated/module.js';
+import { HelloGeneratedModule } from './generated/module.js';
 import { HelloValidator, registerValidationChecks } from './hello-validator.js';
 import { PersonGeneratedModule, PersonModule, PersonServices } from 'person';
 import { HelloAstReflection } from './generated/ast.js';
+import { HelloScopeProvider } from './hello-scope.js';
 
 /**
  * Declaration of custom services - add your own service classes here.
@@ -26,6 +27,9 @@ export type HelloServices = LangiumServices & HelloAddedServices
  * selected services, while the custom services must be fully specified.
  */
 export const HelloModule: Module<HelloServices, PartialLangiumServices & HelloAddedServices> = {
+    references: {
+        ScopeProvider: (services) => new HelloScopeProvider(services) 
+    },
     validation: {
         HelloValidator: () => new HelloValidator()
     }
