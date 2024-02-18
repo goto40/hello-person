@@ -1,4 +1,8 @@
 {
   "name": "hello-person",
-  "workspaces": ["hello", "person"]
+  "workspaces": [
+    "hello",
+    "person",
+    "person-vscode"
+  ]
 }

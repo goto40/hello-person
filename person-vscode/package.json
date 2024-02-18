@@ -1,5 +1,5 @@
 {
-    "name": "person",
+    "name": "person-vscode",
     "description": "Please enter a brief description here",
     "version": "0.0.1",
     "files": [
@@ -9,8 +9,8 @@
     ],
     "type": "module",
     "scripts": {
-        "build": "tsc -b tsconfig.json",
-        "watch": "concurrently -n tsc -c blue \"tsc -b tsconfig.json --watch\"",
+        "build": "tsc -b tsconfig.json && node esbuild.mjs",
+        "watch": "concurrently -n tsc,esbuild -c blue,yellow \"tsc -b tsconfig.json --watch\" \"node esbuild.mjs --watch\"",
         "lint": "eslint src --ext ts",
         "langium:generate": "langium generate",
         "langium:watch": "langium generate --watch",
@@ -21,6 +21,7 @@
         "vscode-languageclient": "~9.0.1",
         "vscode-languageserver": "~9.0.1",
         "chalk": "~5.3.0",
+        "person": "*",
         "commander": "~11.0.0"
     },
     "devDependencies": {
@@ -42,7 +43,32 @@
     "categories": [
         "Programming Languages"
     ],
-    "main": "./out/main.js",
+    "contributes": {
+        "languages": [
+            {
+                "id": "person",
+                "aliases": [
+                    "Person",
+                    "person"
+                ],
+                "extensions": [
+                    ".person"
+                ],
+                "configuration": "./language-configuration.json"
+            }
+        ],
+        "grammars": [
+            {
+                "language": "person",
+                "scopeName": "source.person",
+                "path": "syntaxes/person.tmLanguage.json"
+            }
+        ]
+    },
+    "activationEvents": [
+        "onLanguage:person"
+    ],
+    "main": "./out/extension/main.cjs",
     "bin": {
         "person-cli": "./bin/cli.js"
     }

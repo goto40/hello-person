@@ -6,7 +6,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Run Extension",
+            "name": "Run Hello Extension",
             "type": "extensionHost",
             "request": "launch",
             "args": [
@@ -15,6 +15,18 @@
             "sourceMaps": true,
             "outFiles": [
                 "${workspaceFolder}/hello/out/**/*.js"
+            ]
+        },
+        {
+            "name": "Run Person Extension",
+            "type": "extensionHost",
+            "request": "launch",
+            "args": [
+                "--extensionDevelopmentPath=${workspaceFolder}/person-vscode"
+            ],
+            "sourceMaps": true,
+            "outFiles": [
+                "${workspaceFolder}/person-vscode/out/**/*.js"
             ]
         },
         {

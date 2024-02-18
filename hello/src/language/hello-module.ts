@@ -1,7 +1,9 @@
-import { type Module, inject } from 'langium';
+import { type Module, inject, LangiumGeneratedSharedCoreServices } from 'langium';
 import { createDefaultModule, createDefaultSharedModule, type DefaultSharedModuleContext, type LangiumServices, type LangiumSharedServices, type PartialLangiumServices } from 'langium/lsp';
 import { HelloGeneratedModule, HelloGeneratedSharedModule } from './generated/module.js';
 import { HelloValidator, registerValidationChecks } from './hello-validator.js';
+import { PersonGeneratedModule, PersonModule, PersonServices } from 'person';
+import { HelloAstReflection } from './generated/ast.js';
 
 /**
  * Declaration of custom services - add your own service classes here.
@@ -29,6 +31,15 @@ export const HelloModule: Module<HelloServices, PartialLangiumServices & HelloAd
     }
 };
 
+class CommonAstReflection extends HelloAstReflection {
+    //
+}
+
+export const CommonSharedModule: Module<LangiumSharedServices, LangiumGeneratedSharedCoreServices> = {
+    AstReflection: () => new CommonAstReflection()
+};
+
+
 /**
  * Create the full set of services required by Langium.
  *
@@ -46,18 +57,25 @@ export const HelloModule: Module<HelloServices, PartialLangiumServices & HelloAd
  */
 export function createHelloServices(context: DefaultSharedModuleContext): {
     shared: LangiumSharedServices,
-    Hello: HelloServices
+    Hello: HelloServices,
+    Person: PersonServices
 } {
     const shared = inject(
         createDefaultSharedModule(context),
-        HelloGeneratedSharedModule
+        CommonSharedModule
     );
     const Hello = inject(
         createDefaultModule({ shared }),
         HelloGeneratedModule,
         HelloModule
     );
+    const Person = inject(
+        createDefaultModule({ shared }),
+        PersonGeneratedModule,
+        PersonModule
+    );
     shared.ServiceRegistry.register(Hello);
+    shared.ServiceRegistry.register(Person);
     registerValidationChecks(Hello);
-    return { shared, Hello };
+    return { shared, Hello, Person };
 }

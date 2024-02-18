@@ -2,9 +2,7 @@
   "compilerOptions": {
     "target": "ES2017",
     "module": "Node16",
-    "lib": [
-      "ESNext"
-    ],
+    "lib": ["ESNext"],
     "sourceMap": true,
     "outDir": "out",
     "strict": true,
@@ -14,14 +12,13 @@
     "moduleResolution": "Node16",
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "declaration": true
+    "forceConsistentCasingInFileNames": true
   },
   "include": [
-    "src/**/*.ts"
+     "src/**/*.ts"
   ],
   "exclude": [
-    "out",
-    "node_modules"
+     "out",
+     "node_modules"
   ]
 }
