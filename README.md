@@ -22,4 +22,6 @@ What did I do?
 * Included the `person` lib in the `hello` package.
 * Modified the [`hello-module.ts`](./hello/src/language/hello-module.ts) in order to include the person services, as depited in the discussion.
 * There, I added a `CommonAstReflection` **w/o merging anything** - here, I need to put some more work!
-* Added [scope provider](./hello/src/language/hello-scope.ts) to allow extracting the `Persons` for a `Greeting`. **I do not think that is the preferred way... But is works**
+* Added [scope provider](./hello/src/language/hello-scope.ts) to allow extracting the `Persons` for a `Greeting`.
+  * **I do not think that is the preferred way...**
+  * The scope provider works "after a while" - it seems to require that the "Person" model is parsed...

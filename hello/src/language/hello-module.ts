@@ -1,9 +1,8 @@
-import { type Module, inject, LangiumGeneratedSharedCoreServices } from 'langium';
+import { type Module, inject } from 'langium';
 import { createDefaultModule, createDefaultSharedModule, type DefaultSharedModuleContext, type LangiumServices, type LangiumSharedServices, type PartialLangiumServices } from 'langium/lsp';
-import { HelloGeneratedModule } from './generated/module.js';
+import { HelloGeneratedModule, HelloGeneratedSharedModule } from './generated/module.js';
 import { HelloValidator, registerValidationChecks } from './hello-validator.js';
 import { PersonGeneratedModule, PersonModule, PersonServices } from 'person';
-import { HelloAstReflection } from './generated/ast.js';
 import { HelloScopeProvider } from './hello-scope.js';
 
 /**
@@ -35,13 +34,13 @@ export const HelloModule: Module<HelloServices, PartialLangiumServices & HelloAd
     }
 };
 
-class CommonAstReflection extends HelloAstReflection {
-    //
-}
+// class CommonAstReflection extends HelloAstReflection {
+//     //
+// }
 
-export const CommonSharedModule: Module<LangiumSharedServices, LangiumGeneratedSharedCoreServices> = {
-    AstReflection: () => new CommonAstReflection()
-};
+// export const CommonSharedModule: Module<LangiumSharedServices, LangiumGeneratedSharedCoreServices> = {
+//     AstReflection: () => new CommonAstReflection()
+// };
 
 
 /**
@@ -66,7 +65,7 @@ export function createHelloServices(context: DefaultSharedModuleContext): {
 } {
     const shared = inject(
         createDefaultSharedModule(context),
-        CommonSharedModule
+        HelloGeneratedSharedModule //CommonSharedModule
     );
     const Hello = inject(
         createDefaultModule({ shared }),
