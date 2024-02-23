@@ -1,8 +1,14 @@
 {
   "name": "hello-person",
+  "scripts": {
+    "watch": "concurrently -n hello,person,vscode -c blue,green,orange \"npm run watch -w hello\" \"npm run watch -w person\" \"npm run watch -w person-vscode\" "
+  },
   "workspaces": [
     "hello",
     "person",
     "person-vscode"
-  ]
+  ],
+  "devDependencies": {
+    "concurrently": "~8.2.1"
+  }
 }

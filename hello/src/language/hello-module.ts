@@ -1,9 +1,10 @@
-import { type Module, inject } from 'langium';
+import { type Module, inject, LangiumGeneratedSharedCoreServices, ReferenceInfo, TypeMetaData } from 'langium';
 import { createDefaultModule, createDefaultSharedModule, type DefaultSharedModuleContext, type LangiumServices, type LangiumSharedServices, type PartialLangiumServices } from 'langium/lsp';
-import { HelloGeneratedModule, HelloGeneratedSharedModule } from './generated/module.js';
+import { HelloGeneratedModule } from './generated/module.js';
 import { HelloValidator, registerValidationChecks } from './hello-validator.js';
-import { PersonGeneratedModule, PersonModule, PersonServices } from 'person';
+import { Person, PersonGeneratedModule, PersonModule, PersonServices } from 'person';
 import { HelloScopeProvider } from './hello-scope.js';
+import { HelloAstReflection, PersonFromOtherModel } from './generated/ast.js';
 
 /**
  * Declaration of custom services - add your own service classes here.
@@ -34,13 +35,60 @@ export const HelloModule: Module<HelloServices, PartialLangiumServices & HelloAd
     }
 };
 
-// class CommonAstReflection extends HelloAstReflection {
-//     //
-// }
+class CommonAstReflection extends HelloAstReflection {
 
-// export const CommonSharedModule: Module<LangiumSharedServices, LangiumGeneratedSharedCoreServices> = {
-//     AstReflection: () => new CommonAstReflection()
-// };
+    constructor() {
+        super();
+        console.log('CommonAstReflection::constructor');
+    }
+
+    override isInstance(node: unknown, type: string): boolean {
+        const result = super.isInstance(node, type);
+        console.log(`isInstance(%o, ${type}) -> %o`, node, result);
+        return result;
+    }
+
+    override isSubtype(subtype: string, supertype: string): boolean {
+        let result = super.isSubtype(subtype, supertype);
+        if (subtype===Person && supertype===PersonFromOtherModel) result=true;
+        if (subtype===PersonFromOtherModel && supertype===Person) result=true;
+        console.log(`isSubtype(${subtype}, ${supertype}) -> %o`, result);
+        return result;
+    }
+    override getAllSubTypes(type: string): string[] {
+        const result = super.getAllSubTypes(type);
+        console.log(`getAllSubTypes(${type}) -> %o`, result);
+        return result;        
+    }
+
+    override getAllTypes(): string[] {
+        const result = super.getAllTypes();
+        result.push(Person);
+        console.log('getAllTypes() -> %o', result);
+        return result;
+    }
+    override getReferenceType(refInfo: ReferenceInfo): string {
+        const result = super.getReferenceType(refInfo);
+        console.log(`getReferenceType(${refInfo}) -> %o`, result);
+        return result;
+    }
+    override getTypeMetaData(type: string): TypeMetaData {
+        const result = super.getTypeMetaData(type);
+        console.log(`getTypeMetaData(${type}) -> %o`, result);
+        return result;
+    }
+
+    protected override computeIsSubtype(subtype: string, supertype: string): boolean {
+        const result = super.computeIsSubtype(subtype, supertype);
+        console.log(`computeIsSubtype(${subtype},${supertype}) -> %o`, result);
+        return result;
+    }
+
+}
+
+export const CommonSharedModule: Module<LangiumSharedServices, LangiumGeneratedSharedCoreServices> = {
+    AstReflection: () => new CommonAstReflection()
+};
 
 
 /**
@@ -65,7 +113,7 @@ export function createHelloServices(context: DefaultSharedModuleContext): {
 } {
     const shared = inject(
         createDefaultSharedModule(context),
-        HelloGeneratedSharedModule //CommonSharedModule
+        CommonSharedModule
     );
     const Hello = inject(
         createDefaultModule({ shared }),
