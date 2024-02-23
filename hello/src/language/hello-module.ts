@@ -51,7 +51,6 @@ class CommonAstReflection extends HelloAstReflection {
     override isSubtype(subtype: string, supertype: string): boolean {
         let result = super.isSubtype(subtype, supertype);
         if (subtype===Person && supertype===PersonFromOtherModel) result=true;
-        if (subtype===PersonFromOtherModel && supertype===Person) result=true;
         console.log(`isSubtype(${subtype}, ${supertype}) -> %o`, result);
         return result;
     }
